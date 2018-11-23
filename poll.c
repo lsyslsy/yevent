@@ -64,8 +64,8 @@ static int select_poll(eventloop *ep, struct timeval *tvp)
     goto end_err;
   } else  {
     int fired = 0;
-    int flag = YEVENT_NONE;
     for (int i = 0; i < count; i++) {
+      int flag = YEVENT_NONE;
       if (fired > ret)
         break;
       // can read

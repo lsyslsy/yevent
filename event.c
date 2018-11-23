@@ -1,12 +1,15 @@
 #include "event.h"
 
-
+//#define USE_EPOLL
 //#define USE_SELECT
-
-#ifdef USE_SELECT
-  #include "select.c"
+#ifdef USE_EPOLL
+  #include "epoll.c"
 #else
-  #include "poll.c"
+  #ifdef USE_SELECT
+    #include "select.c"
+  #else
+    #include "poll.c"
+  #endif
 #endif
 void free_event_loop(eventloop *ep)
 {
@@ -98,6 +101,7 @@ int event_loop(eventloop *ep)
       printf("some error\n");
     } else if (n == 0) {
       printf("no data\n");
+      exit(1);
     } else {
       // if some event happens, then call the callback
       for (int i = 0; i < n; i++) {
@@ -127,13 +131,13 @@ void print_stdin(eventloop *ep, int fd, int flag, void *private_data)
     exit(1);
   } else if (n < 0) {
     printf("some error\n");
+    exit(1);
   } else {
     buf[n] = '\0';
     printf("read from: %s", buf);
   }
 }
 
-                                
 int main()
 {
   eventloop *ep = create_event_loop();
