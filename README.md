@@ -1,5 +1,5 @@
 # yevent
-a async event framework, tiny libevent
+a async event library, inspired by redis aio event
 
 gcc event.c -o evtest
 
